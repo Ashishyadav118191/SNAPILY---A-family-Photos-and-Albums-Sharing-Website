@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}
+    Login - Snapily
+{% endblock %}
+{% block content %}
+    <div class="d-flex bg-welcome-section justify-content-center align-items-center" style="height: 80vh;">
+        <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
+            <h2 class="text-center mb-4">Login to Snapily</h2>
+            <form method="POST" action="{% url 'user_login' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="user_auth" class="form-label">Are you Admin : </label>
+
+                    <input type="radio" id="yes" name="agreement" value="yes">
+                    <label for="yes">Yes</label>
+
+                    <input type="radio" id="no" name="agreement" value="no">
+                    <label for="no">No</label>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+                   
+            </form>
+            <p class="text-center mt-3">Don't have an account? <a href="{% url 'register' %}">Sign Up</a></p>
+        </div>
+    </div>
+
+
+{% endblock %}

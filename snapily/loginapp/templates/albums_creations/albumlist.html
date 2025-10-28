@@ -1,0 +1,105 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-4 shadow-sm p-3 bg-white rounded">
+    <div class="d-flex justify-content-between align-items-center bg-welcome-section rounded-3 text-light p-2 mb-1  ">
+        <h2 class="mb-0 ">My Albums</h2>
+        <div class="d-flex gap-2">
+            <a href="{% url 'create_album' %}" class="btn btn-success">+ Create New Album</a>
+            <!-- Filter Button triggers modal -->
+            <button type="button" class="btn btn-light btn-view" data-bs-toggle="modal" data-bs-target="#filterModal">
+                Filters
+            </button>
+            <a href="{% url 'album_list' %}" class="btn btn-secondary">Reset</a>
+        </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <form id="filterForm">
+            <div class="modal-header">
+              <h5 class="modal-title" id="filterModalLabel">Filter Albums</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Month -->
+              <div class="mb-3">
+                <label for="month" class="form-label">Month</label>
+                    <select name="month" id="month" class="form-select" required>
+                        <option value="">Select Month</option>
+                        {% for value , name in months %}
+                            <option value="{{ value }}">{% if selected_month == value|stringformat:"s"%}selected{%endif%}>{{name}}</option>
+                        {% endfor %}
+                    </select>
+              </div>
+              <!-- Year -->
+              <div class="mb-3">
+                <label for="year" class="form-label">Year</label>
+                <input type="number" class="form-control" name="year" id="year" min="" max="2100" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Filter</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Album List Container -->
+    <div id="albumList">
+        {% for month, albums in albums_grouped %}
+            <h4 class="mt-4 font-color">{{ month }}</h4>
+            <div class="row g-3">
+                {% for album in albums %}
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        {% if album.cover_photo %}
+                            <img src="{{ album.cover_photo.url }}" class="card-img-top" alt="{{ album.name }}" style="height: 250px; object-fit: cover;">
+                        {% else %}
+                            <img src="{% static 'default_cover.jpg' %}" class="card-img-top" alt="Default cover" style="height: 250px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ album.name }}</h5>
+                            <p class="card-text"><small class="text-muted">Created by: {{ album.created_by.username }}</small></p>
+                            <p class="text-muted"><small>Created on {{ album.created_at|date:"M d, Y" }}</small></p>
+                            <a href="{% url 'album_detail' album.id %}" class="btn  bg-welcome btn-sm mt-auto ">View Album</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% empty %}
+            <p>No albums found.</p>
+        {% endfor %}
+    </div>
+    <a href="{% url 'index' %}" class="btn btn-secondary mt-3">Back to Home</a>
+</div>
+{% endblock %}
+
+
+<!-- AJAX for Filter -->
+<script>
+document.getElementById('filterForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const month = document.getElementById('month').value;
+    const year = document.getElementById('year').value;
+    const url = "{% url 'album_list' %}?month=" + month + "&year=" + year;
+
+    fetch(url, {
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('albumList').innerHTML = data;
+        const modal = bootstrap.Modal.getInstance(document.getElementById('filterModal'));
+        modal.hide();
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>

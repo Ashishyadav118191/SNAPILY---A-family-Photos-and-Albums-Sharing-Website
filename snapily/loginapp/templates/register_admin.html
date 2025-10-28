@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}
+    Register as Admin - Snapily
+{% endblock %}
+{% block content %}
+<style>
+    .form-card {
+        background: rgba(255, 255, 255, 0.8); /* transparent background */
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        border-radius: 20px;
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card form-card shadow-lg p-4 w-100">
+        <h3 class="fw-bold text-center mb-4">Family Head Info</h3>
+        <p class="fw-bold text-center mb-4">Register as Admin to manage your family's photo sharing</p>
+        <form method="POST" action="{% url 'register_admin' %}">
+            {% csrf_token %}
+            <div class="row g-3">
+                <!-- Full Name & Family Name -->
+                <div class="col-md-6">
+                    <label for="fullname" class="form-label">Full Name & Family Name</label>
+                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter your full name" required>
+                </div>
+
+                <!-- Email or Number -->
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email or Number</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter email " required>
+                </div>
+
+                <!-- Username -->
+                <div class="col-md-6">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" required>
+                </div>
+
+                <!-- Password -->
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="col-md-6">
+                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Re-enter password" required>
+                </div>
+                <!--Family code -->
+                <div class="col-md-6">
+                    <label for="admin_code" class="form-label">Family Code</label>
+                    <input type="text" class="form-control" id="admin_code" name="admin_code" placeholder="Enter code from Family member " required >
+                    <small class="text-muted">Create your family's Admin Code </small>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Register Admin</button>
+            </div>
+
+            <!-- Link for existing account -->
+            <div class="text-center mt-3">
+                <p class="text-muted">Already have an account? 
+                    <a href="{% url 'user_login' %}">Login here</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

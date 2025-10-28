@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %} 
+    Register as Family Member: Snapily 
+{% endblock %}
+{% block content %}
+<style>
+    .form-card {
+        background: rgba(255, 255, 255, 0.85); /* Transparent background */
+        -webkit-backdrop-filter: blur(8px); /* Safari support */
+        backdrop-filter: blur(8px);
+        border-radius: 20px;
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card form-card shadow-lg p-4 w-100 mt-5">
+        <h3 class="fw-bold text-center mb-4">Personal Information for Members</h3>
+
+        <form method="POST" action="{% url 'register_member' %}">
+            {% csrf_token %}
+            <div class="row g-3">
+
+                <!-- Full Name -->
+                <div class="col-md-6">
+                    <label for="fullname" class="form-label">Full Name of Family </label>
+                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter full name" required>
+                </div>
+
+                <!-- Gender -->
+                <div class="col-md-6">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select id="gender" name="gender" class="form-select" required>
+                        <option value="">Choose...</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <!-- Relationship to Admin -->
+                <div class="col-md-6">
+                    <label for="relationship" class="form-label">Relationship to Admin</label>
+                    <input type="text" class="form-control" id="relationship" name="relationship" placeholder="e.g. Son, Daughter, Brother" required>
+                </div>
+
+                <!-- Email / Phone -->
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email </label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter email " required>
+                </div>
+
+                <!-- Username -->
+                <div class="col-md-6">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" required>
+                </div>
+
+                <!-- Password -->
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="col-md-6">
+                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Re-enter password" required>
+                </div>
+
+                <!-- Family Code -->
+                <div class="col-md-6">
+                    <label for="admin_code" class="form-label">Family Code</label>
+                    <input type="text" class="form-control" id="admin_code" name="admin_code" placeholder="Enter code from Admin">
+                    <small class="text-muted">Either Family Code or Member ID is mandatory</small>
+                </div>
+
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-success btn-lg">Register Member</button>
+            </div>
+
+            <!-- Link for existing account -->
+            <div class="text-center mt-3">
+                <p class="text-muted">Already registered? 
+                    <a href="{% url 'user_login' %}">Login here</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

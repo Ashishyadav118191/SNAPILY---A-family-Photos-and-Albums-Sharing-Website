@@ -1,0 +1,71 @@
+{% extends "index.html" %}
+{% block content %}
+<!-- Memories grouped by year -->
+<div class="container py-3">
+    <div class="row bg-welcome-section rounded-3  p-2 mb-4">
+        <h2 class="mb-2 text-light">Memories Overview</h2>
+    </div>
+    <div class="container">
+        {% for year, memories in memories_by_year.items %}
+            <!-- Year Heading -->
+            <div class="mb-2">
+                <h2 class="fw-bold custom-brand-color border-bottom pb-2"> Year: {{ year }}</h2>
+            </div>
+            <div class="row g-2 mb-2 mt-2 bg-light p-2 rounded-3 shadow-sm">
+                {% for memory in memories %}
+                <div class="col-md-3">
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{ memory.image.url }}" class="card-img-top"
+                            alt="{{ memory.tag }}" style="height: 200px; object-fit: cover;">
+
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between gap-2">
+                                <!-- Button trigger modal -->
+                                <button class="btn btn-light btn-sm flex-grow-1 btn-view" 
+                                        data-bs-toggle="modal" data-bs-target="#addToAlbumModal{{ memory.id }}">
+                                    Add to Album
+                                </button>
+                                <a href="{% url 'memory_delete' memory.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addToAlbumModal{{ memory.id }}" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                    <form method="post" action="{% url 'add_memory_to_album' memory.id %}">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                        <h5 class="modal-title">Add "{{ memory.tag }}" to Album</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">*</button>
+                        </div>
+                        <div class="modal-body">
+                        <label for="albumSelect{{ memory.id }}" class="form-label">Choose Album</label>
+                        <select name="album_id" id="albumSelect{{ memory.id }}" class="form-select" required>
+                            {% for album in user_albums %}
+                            <option value="{{ album.id }}">{{ album.name }}</option>
+                            {% empty %}
+                            <option disabled>No albums available</option>
+                            {% endfor %}
+                        </select>
+                        <p>Albums Found: {{ user_albums.count }}</p>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add to album</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% empty %}
+            <p class="text-muted">No memories available.</p>
+        {% endfor %}
+    </div>
+    <a href="{% url 'memory_list' %}" class="btn btn-secondary mt-2 mb-4">Back to Memories</a>
+</div>
+{% endblock %}
