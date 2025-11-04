@@ -21,24 +21,22 @@ def __str__(self):
 #   <-----model for custum user-----> 
 
 class CustemUser(AbstractUser):
-
-    family_head = models.ForeignKey('self',on_delete=models.CASCADE,null=True, blank=True,related_name='members')
-
+    family_head = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='members')
     fullname = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(unique=False)
-
     is_family_head = models.BooleanField(default=False)
     is_family_member = models.BooleanField(default=False)
-
-    
     gender = models.CharField(max_length=10, blank=True, null=True)
     relationship_to_admin = models.CharField(max_length=100, blank=True, null=True)
     admin_code = models.CharField(max_length=50, blank=True, null=True)
     member_id = models.CharField(max_length=50, blank=True, null=True)
-    
+    profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    dob = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.username
+
 
 # models for album creations 
 

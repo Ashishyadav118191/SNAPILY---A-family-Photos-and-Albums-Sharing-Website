@@ -173,8 +173,8 @@
              {% block content %}
             <section class="py-5 bg-welcome-section mt-3 rounded-3 text-white text-center position-relative">
             <div class="container ">
-                <h1 class="display-4 welcome-text">Hello, {{ user.username }}</h1>
-                <p class="lead mt-3">{{ user.fullname }}, welcomes you </p>
+                <h1 class="display-4 welcome-text">Hello, {{ user.name|default:user.username }}</h1>
+                <p class="lead mt-3 ">{{ user.fullname }}, welcomes you in </p>
                 <p class="lead fw-bold">Snapily - Your Family Vault of Memories</p>
 
                 {% if admin_code %}
@@ -200,10 +200,10 @@
                 <div class="card m-2 {% if member.is_family_head %}bg-light border-danger{% endif %}" style="min-width: 300px; flex: 0 0 auto;">
                     <div class="card-body text-center">
                     <h5 class="card-title {% if member.is_family_head %}text-danger{% endif %}">
-                        {{ member.fullname|default:member.username }}
+                        {{ member.name|default:member.username }}
                     </h5>
                     <p class="card-text">{{ member.email }}</p>
-                    {% if member.relationship_to_admin %}
+                    {% if member.relationship_to_admin and member.is_family_member %}
                         <span class="badge bg-primary">{{ member.relationship_to_admin }}</span>
                     {% endif %}
                     {% if member.is_family_head %}

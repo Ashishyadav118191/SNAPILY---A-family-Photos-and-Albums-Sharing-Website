@@ -534,3 +534,40 @@ def profile_view(request):
         'profile': profile,
     }
     return render(request, 'user_details_pages/profile.html', context)
+
+# updating user profile
+
+@login_required(login_url='guestuser')
+def update_profile(request):
+    user = request.user  # currently logged-in user
+    if request.method == 'POST':
+        fullname = request.POST.get('name')
+        gender = request.POST.get('gender')
+        relationship = request.POST.get('relation')
+        family_name = request.POST.get('family_name')
+        dob = request.POST.get('dob')
+        photo = request.FILES.get('photo')
+
+        # Only family head can edit family_name
+        if user.is_family_head and family_name:
+            user.family_name = family_name
+
+        # Common fields for all users
+        if fullname:
+            user.name = fullname
+        if gender:
+            user.gender = gender
+        if relationship:
+            user.relationship_to_admin = relationship
+        if dob:
+            user.dob = dob  # if dob exists in your model
+        if photo:
+            user.profile_photo = photo  # ensure your model has ImageField
+
+        user.save()
+        messages.success(request, "Profile updated successfully!")
+
+        return redirect('profile_view')  # replace with your actual profile page route name
+
+    # If GET, just render the page
+    return render(request, 'user_details_pages/profile.html', {'user': user})
