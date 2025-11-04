@@ -550,7 +550,7 @@ def update_profile(request):
 
         # Only family head can edit family_name
         if user.is_family_head and family_name:
-            user.family_name = family_name
+            user.fullname = family_name
 
         # Common fields for all users
         if fullname:
