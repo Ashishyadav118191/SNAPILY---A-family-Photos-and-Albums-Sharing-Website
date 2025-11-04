@@ -24,5 +24,6 @@ urlpatterns = [
     path('memories_details/', views.memory_detail, name='memory_detail'),
     path('album/<int:album_id>/add-photo/', views.add_photo_to_album, name='add_photo_to_album'),
     path("memories/<int:memory_id>/add-to-album/", views.add_memory_to_album, name="add_memory_to_album"),
+    path("profile/", views.profile_view, name="profile_view"),
 
 ]

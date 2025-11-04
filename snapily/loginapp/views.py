@@ -519,3 +519,18 @@ def add_memory_to_album(request, memory_id):
 
     messages.error(request, "Invalid request")
     return redirect("memory_detail")
+
+
+# to view the profile sections of the users 
+
+@login_required(login_url='guestuser')
+def profile_view(request):
+    user = request.user
+    # If you have a related Profile model, you can access it like this
+    # (assuming you created OneToOne relation with User)
+    profile = getattr(user, 'profile', None)
+    context = {
+        'user': user,
+        'profile': profile,
+    }
+    return render(request, 'user_details_pages/profile.html', context)

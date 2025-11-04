@@ -137,7 +137,7 @@
 
         <!-- Nav links + Actions -->
         <div class="collapse navbar-collapse" id="fbNav">
-        <ul class="navbar-nav m-left-auto mb-5 mb-lg-0 gap-3 ms-auto">
+        <ul class="navbar-nav m-left-auto mb-5 mb-lg-0 gap-3 ms-auto p-2">
             <li class="nav-item space evenly "><a class="nav-link active" href="{%url 'index'%}">Home</a></li>
             <li class="nav-item"><a class="nav-link active" href="{% url 'memory_list' %}">Moments</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'album_list' %}">Albums</a></li>
@@ -145,7 +145,7 @@
         </ul>
 
         <div class="d-flex align-items-center gap-3">
-            <a href="{% url 'guestuser' %}" class="btn btn-color">Sign_Out</a>
+            <a href="{% url 'profile_view' %}" class="btn btn-color">Profile</a>
 
             <!-- Add (+) button -->
                 <a href="{% url 'create_album' %}" 
