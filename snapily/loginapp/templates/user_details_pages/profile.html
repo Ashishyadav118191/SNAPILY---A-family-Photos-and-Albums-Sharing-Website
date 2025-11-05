@@ -13,10 +13,18 @@
 
         <div class="card-body p-4">
           <div class="text-center mb-4">
-            <img src="{{user.profile_pic}}" alt="Set your profile picture"
-                 class="rounded-circle" width="150" height="150">
-            <h4 class="mt-3">{{ user.username }}</h4>
-          </div>
+              {% if user.profile_pic %}
+                <img src="{{ user.profile_pic.url }}" 
+                    alt="{{ user.fullname }}" 
+                    class=" text-center mb-4 rounded-circle shadow" 
+                    width="150" height="150">
+              {% else %}
+                <div class="border rounded-circle d-flex align-items-center justify-content-center bg-light text-muted"
+                    style="width:150px; height:150px;">
+                  <span>Set your profile picture</span>
+                </div>
+              {% endif %}
+            </div>
 
           <div class="row mb-3">
             <div class="col-sm-4 fw-bold">Full Name</div>
@@ -49,7 +57,6 @@
     </div>
   </div>
 </div>
-<!-- edit button modal  -->
 
 <!-- Edit Member Modal -->
 <div class="modal fade" id="editMemberModal" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">

@@ -562,7 +562,7 @@ def update_profile(request):
         if dob:
             user.dob = dob  # if dob exists in your model
         if photo:
-            user.profile_photo = photo  # ensure your model has ImageField
+            user.profile_pic = photo  # ensure your model has ImageField
 
         user.save()
         messages.success(request, "Profile updated successfully!")
