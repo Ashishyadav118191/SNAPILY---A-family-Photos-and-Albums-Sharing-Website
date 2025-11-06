@@ -139,9 +139,9 @@
         <div class="collapse navbar-collapse" id="fbNav">
         <ul class="navbar-nav m-left-auto mb-5 mb-lg-0 gap-3 ms-auto p-2">
             <li class="nav-item space evenly "><a class="nav-link active" href="{%url 'index'%}">Home</a></li>
-            <li class="nav-item"><a class="nav-link active" href="{% url 'memory_list' %}">Moments</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{% url 'memory_list' %}">Memories</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'album_list' %}">Albums</a></li>
-            <li class="nav-item"><a class="nav-link" href="#members">Family</a></li>
+            <li class="nav-item"><a class="nav-link" href="#members">Members</a></li>
         </ul>
 
         <div class="d-flex align-items-center gap-3">
@@ -173,7 +173,13 @@
              {% block content %}
             <section class="py-5 bg-welcome-section mt-3 rounded-3 text-white text-center position-relative">
             <div class="container ">
-                <h1 class="display-4 welcome-text">Hello Admin , {{ user.name|default:user.username }}</h1>
+                <h1 class="display-4 welcome-text">
+                    {% if user.is_family_head %}
+                        Hello Head , {{ user.name|default:user.username }}
+                    {% else %}
+                        Hello Member , {{ user.name|default:user.username }}
+                    {% endif %}
+                </h1>
                 <p class="lead mt-3 ">{{ user.fullname }}, welcomes you in </p>
                 <p class="lead fw-bold">Snapily - Your Family Vault of Memories</p>
 
