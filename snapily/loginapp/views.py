@@ -174,10 +174,12 @@ def user_login(request):
         if user is not None:
             # optional: check user type against radio button
             if agreement == 'yes' and not user.is_family_head:
+                messages.error(request, "You are not authorized as Family Head.")
                 return render(request, 'login.html',
                               {'error': 'You are not authorized as Family Head.'})
 
             if agreement == 'no' and user.is_family_head:
+                messages.error(request, "You are not authorized as Family Member.")
                 return render(request, 'login.html',
                               {'error': 'You are not authorized as Family Member.'})
 
@@ -188,6 +190,7 @@ def user_login(request):
             return redirect('index')
 
         else:
+            messages.error(request, "Invalid username or password.")
             return render(request, 'login.html',
                           {'error': 'Invalid username or password'})
 

@@ -3,19 +3,29 @@
     Login - Snapily
 {% endblock %}
 {% block content %}
+    {% if messages %}
+        <div class="container mt-3 ">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     <div class="d-flex bg-welcome-section justify-content-center align-items-center" style="height: 80vh;">
         <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
             <h2 class="text-center mb-4">Login to Snapily</h2>
             <form method="POST" action="{% url 'user_login' %}">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="user_auth" class="form-label">Are you Admin : </label>
+                    <label for="user_auth" class="form-label me-3">Are you Head of Family? : </label>
 
                     <input type="radio" id="yes" name="agreement" value="yes">
-                    <label for="yes">Yes</label>
+                    <label for="yes" class="me-2">Yes</label>
 
                     <input type="radio" id="no" name="agreement" value="no">
-                    <label for="no">No</label>
+                    <label for="no" class="me-2">No</label>
                 </div>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
