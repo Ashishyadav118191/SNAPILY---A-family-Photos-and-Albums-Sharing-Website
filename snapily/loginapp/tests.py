@@ -1,5 +1,11 @@
 from django.test import TestCase
 from .models import *
+from django.urls import path
+from django.urls import reverse
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 
 # Create your tests here.
 
@@ -56,4 +62,47 @@ def MemoryModelTest(TestCase):
         self.assertIsNotNone(self.memory.created_at)
         return f"Memory by {self.user.username} on {self.date} at {self.location}"
 
-   
+def CustemUserModelTest(TestCase):
+
+    def setUp(self):
+        self.user = CustemUser.objects.create_user(
+            username='customuser',
+            password='12345',
+            is_family_head = True,
+            gender = 'Male',
+            relationship_to_admin = 'Self',
+            admin_code = 'ADMIN123',
+            dob= '1990-01-01',
+        )
+
+    def test_custom_user_creation(self):
+        self.assertEqual(self.user.username, 'customuser')
+        self.assertTrue(self.user.is_family_head)
+        self.assertEqual(self.user.gender, 'Male')
+        self.assertEqual(self.user.relationship_to_admin, 'Brother')
+        self.assertEqual(self.user.admin_code, 'ADMIN123')
+        self.assertEqual(self.user.dob.strftime('%Y-%m-%d'), '1990-01-01')
+        self.assertIsNone(self.user.profile_pic)
+
+        return f"User: {self.username}, Head: {self.is_family_head}, Member: {self.admin_code}"   
+
+# testing of views 
+
+class GuestUserViewTest(TestCase):
+    def test_guestuser_view(self):
+        response = self.client.get(reverse('guestuser'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'guestuser.html')
+
+class IndexViewTest(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='12345'
+        )
+    def test_index_view(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(reverse('index'), follow = True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index.html')
